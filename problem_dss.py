@@ -340,7 +340,7 @@ class Problem:
         cost_IL = tf.reduce_sum(delta_IL, axis=[1,2]) / tf.math.maximum(tf.constant([1.]),tf.reduce_sum(non_zero_IL, axis=[1,2]) )
 
         # Add constraint: U1 in [0.95,1.05] p.u.
-        regularizer = tf.reduce_sum(((tf.nn.relu(0.95 - U1) + tf.nn.relu(U1 - 1.05)) * tf.math.reduce_max(cov_v)),
+        regularizer = tf.reduce_sum(((tf.nn.relu(0 - U1) + tf.nn.relu(U1 - 0.1)) * tf.math.reduce_max(cov_v)),
                                     axis=[1, 2])  # + \
 
         # Compute loading and add constraint: loading < 100%
@@ -364,7 +364,7 @@ class Problem:
 
         # Compute difference of voltage angle across the lines and add constraint: \Delta U2 < 15 deg. = 0.25 rad
         U2_e = U2_i - U2_j - A[:,:,14:]
-        regularizer3 = tf.reduce_sum((tf.nn.relu(-0.25 - U2_e) + tf.nn.relu(U2_e-0.25)) * tf.math.reduce_max(cov_IL), axis=[1,2]) 
+        regularizer3 = tf.reduce_sum((tf.nn.relu(-3.14 - U2_e) + tf.nn.relu(U2_e-3.14)) * tf.math.reduce_max(cov_IL), axis=[1,2]) 
         
         # Summing all terms
         cost_per_sample = cost_P + cost_Q + cost_PL + cost_QL + cost_theta + cost_IL + cost_v
